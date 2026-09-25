@@ -5,3 +5,4 @@ data/
 __pycache__/
 *.pkl
 catboost_info/
+test.py
