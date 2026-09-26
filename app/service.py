@@ -9,10 +9,19 @@ class ScoringService:
         CONFIG_PATH = BASE_DIR / "artifacts" / "config.json"
         MODEL_PATH = BASE_DIR / "artifacts" / "model.cbm"
         with open(CONFIG_PATH, "r") as js:
-            config = json.load(js)
+            self._config = json.load(js)
         self.model = CatBoostClassifier()
         self.model.load_model(MODEL_PATH)
 
     def predict(self, payload: ScoringRequest) -> ScoringResponse:
-        payload.model_dump(by_alias=True)
 
+        request = payload.model_dump(by_alias=True)
+
+        for key in self._config["defaults"]:
+            if request[key] is None:
+                request[key]=self._config["defaults"][key]
+
+        feats = [request[x] for x in self._config["features"]]
+
+        prob = self.model.predict_proba([feats])[0][1]
+        return ScoringResponse(default_probability=round(prob, 3), is_approved=prob < self._config["threshold"])
