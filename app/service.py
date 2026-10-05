@@ -1,7 +1,7 @@
 import json
 import pathlib
 from catboost import CatBoostClassifier
-from schemas import ScoringRequest, ScoringResponse
+from .schemas import ScoringRequest, ScoringResponse
 
 class ScoringService:
     def __init__(self):
