@@ -2,6 +2,7 @@ import json
 import pathlib
 from catboost import CatBoostClassifier
 from .schemas import ScoringRequest, ScoringResponse
+from .preprocessing import preprocessing
 
 class ScoringService:
     def __init__(self):
@@ -17,11 +18,9 @@ class ScoringService:
 
         request = payload.model_dump(by_alias=True)
 
-        for key in self._config["defaults"]:
-            if request[key] is None:
-                request[key]=self._config["defaults"][key]
-
+        request = preprocessing(request)
+        
         feats = [request[x] for x in self._config["features"]]
 
         prob = self.model.predict_proba([feats])[0][1]
-        return ScoringResponse(default_probability=round(prob, 3), is_approved=prob < self._config["threshold"])
+        return ScoringResponse(default_probability = prob, is_approved=prob < self._config["threshold"])

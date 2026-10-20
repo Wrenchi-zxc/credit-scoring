@@ -1,9 +1,5 @@
 {
-  "threshold": 0.184,
-  "defaults": {
-    "MonthlyIncome": 5400.0,
-    "NumberOfDependents": 0.0
-  },
+  "threshold": 0.20422038322636615,
   "features": [
     "RevolvingUtilizationOfUnsecuredLines",
     "age",

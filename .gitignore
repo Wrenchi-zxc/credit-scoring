@@ -1,8 +1,8 @@
 .venv/
 .idea/
+.vscode/
 .ipynb_checkpoints/
 data/
 __pycache__/
 *.pkl
 catboost_info/
-test.py
